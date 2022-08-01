@@ -23,17 +23,25 @@ class MainActivity : AppCompatActivity() {
         val viewModelFactory = MainViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
         viewModel.getPost()
-        viewModel.myResponse.observe(this) { response ->
-           if(response.isSuccessful){
-               Log.d("RESPONSE", response.body()?.id.toString())
-               Log.d("RESPONSE", response.body()?.myUserId.toString())
-               Log.d("RESPONSE", response.body()?.body.toString())
-               binding.textView.text = response.body()?.body.toString()
-           }else{
-               Log.d("RESPONSE", response.errorBody().toString())
-               binding.textView.text = response.errorBody().toString()
+        viewModel.myCustomPosts2.observe(this) { response ->
+            if(response.isSuccessful){
+                response.body()?.forEach{
+                    Log.d("RESPONSE", it.body)
+                    Log.d("RESPONSE", "---------------------")
+                }
+                binding.textView.text = response.body()?.toString()
+            }else{
+                Log.d("RESPONSE", response.errorBody().toString())
+                binding.textView.text = response.code().toString()
 
-           }
+            }
+        }
+        binding.button.setOnClickListener {
+            val myNumber = binding.edtNumber.text.toString()
+            val options: HashMap<String, String> = HashMap()
+            options["_sort"] = "id"
+            options["_order"] = "desc"
+            viewModel.getCustomPosts2(Integer.parseInt(myNumber), options)
         }
     }
 }
