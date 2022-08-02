@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.playlab.retrofitapp.adapter.MyAdapter
 import com.playlab.retrofitapp.databinding.ActivityMainBinding
+import com.playlab.retrofitapp.model.Post
 import com.playlab.retrofitapp.repository.Repository
 
 class MainActivity : AppCompatActivity() {
@@ -27,12 +28,15 @@ class MainActivity : AppCompatActivity() {
         val repository = Repository()
         val viewModelFactory = MainViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+
+        val myPost = Post(2,2, "Otimista-San", "Android Developer")
+        viewModel.pushPost(myPost)
         viewModel.getCustomPosts(2, "id", "desc")
-        viewModel.myCustomPosts.observe(this){ response ->
+        viewModel.myResponse.observe(this){ response ->
             if(response.isSuccessful){
-                response.body()?.let {
-                    myAdapter.setData(it)
-                }
+               Log.d("Main", response.body().toString())
+               Log.d("Main", response.code().toString())
+               Log.d("Main", response.message().toString())
             }else{
                 Toast.makeText(this, response.code(), Toast.LENGTH_SHORT).show()
             }
