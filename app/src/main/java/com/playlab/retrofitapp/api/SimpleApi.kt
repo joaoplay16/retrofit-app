@@ -18,6 +18,9 @@ interface SimpleApi {
         @Path("postNumber") number: Int
     ): Response<Post>
 
+    @GET("posts/1")
+    suspend fun getPost3(@Header("Auth") auth: String): Response<Post>
+
     @GET("posts")
     suspend fun getCustomPosts(
         @Query("userId") userId: Int,
