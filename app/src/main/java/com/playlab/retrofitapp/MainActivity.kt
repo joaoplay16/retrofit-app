@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 
         val myPost = Post(2,2, "Otimista-San", "Android Developer")
-        viewModel.pushPost(myPost)
+        viewModel.pushPost2(2,2, "Otimista-San", "Android Developer")
         viewModel.getCustomPosts(2, "id", "desc")
         viewModel.myResponse.observe(this){ response ->
             if(response.isSuccessful){
